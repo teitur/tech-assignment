@@ -26,7 +26,7 @@ export default function Board() {
   function calculateMovingAvg(data, windowSize) {
     const prices = data.map(item => item.price); // Extract prices
     let movingAvg = [];
-    
+
     for (let i = 0; i < prices.length; i++) {
       const start = Math.max(i - windowSize + 1, 0);
       const window = prices.slice(start, i + 1);
@@ -40,7 +40,7 @@ export default function Board() {
     fetch('/data/input_data.json')
       .then((response) => response.json())
       .then((data) => {
-        setData({ 
+        setData({
           Inst1: sortByDate(data.Inst1),
           Inst2: sortByDate(data.Inst2)
         });
@@ -100,38 +100,63 @@ export default function Board() {
   } : null;
 
   return (
-    <div id="board">
-      {/* Button to toggle moving average */}
-      <button onClick={() => setShowMovingAvg(!showMovingAvg)}>
-        {showMovingAvg ? 'Hide' : 'Show'} Moving Average
-      </button>
-
-      {/* Input field for customizable window size */}
-      <div>
-        <label>
-          Window Size for Moving Average:
-          <input 
-            type="number" 
-            value={windowSize} 
-            onChange={(e) => setWindowSize(Number(e.target.value))}
-            min="1"
-            max="50" 
-          />
-        </label>
+    <div className="container mt-4">
+      {/* Header */}
+      <div className="row mb-3">
+        <div className="col text-center">
+          <h2>Instrument Time Series</h2>
+        </div>
       </div>
 
-      {/* Plotly chart rendering */}
+      {/* Display the plot */}
       {data.Inst1.length > 0 ? (
         <Plot
           data={[trace1, trace2, trace3, trace4].filter(Boolean)} // Filter out null traces
-          layout={{ 
-            width: "100%", 
-            height: "100%", 
-            title: { text: (showMovingAvg ? 'Moving Average' : 'Price') } 
+          layout={{
+            width: 1000,
+            height: "500px", // Adjust height as needed
+            title: { text: (showMovingAvg ? 'Moving Average' : 'Price') }
           }}
         />
       ) : (
-        <p>Loading data...</p>
+        <div className="row">
+          <div className="col text-center">
+            <p>Loading data...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Button to toggle moving average */}
+      <div className="row mb-3">
+        <div className="col-4 text-left">
+          <button 
+            className="btn btn-primary btn-sm"
+            onClick={() => setShowMovingAvg(!showMovingAvg)}
+          >
+            {showMovingAvg ? 'Hide' : 'Show'} Moving Average
+          </button>
+        </div>
+      </div>
+
+      {/* Conditionally render the input field for window size if showMovingAvg is true */}
+      {showMovingAvg && (
+        <div className="row mb-4">
+          <div className="col-4 text-left">
+            <div className="form-floating">
+              <input
+                type="number"
+                className="form-control"
+                id="movingAvgWindow"
+                value={windowSize}
+                onChange={(e) => setWindowSize(Number(e.target.value))}
+                min="1"
+                max="50"
+                style={{ width: '180px' }} 
+              />
+              <label htmlFor="movingAvgWindow">Moving Average Window</label>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
