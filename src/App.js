@@ -75,8 +75,8 @@ export default function Board() {
     name: "Inst2 Price",
     x: unpack(data.Inst2, "date"),
     y: unpack(data.Inst2, "price"),
-    line: { color: "#7F7F7F" },
-    marker: { color: "#7F7F7F", size: 4 }
+    line: { color: "#FFA500" },
+    marker: { color: "#FFA500", size: 4 }
   } : null;
 
   // Create trace for Inst1 moving average (if toggle is true)
@@ -96,7 +96,7 @@ export default function Board() {
     name: `Inst2 Moving Average (${windowSize} days)`,
     x: unpack(data.Inst2, "date"),
     y: movingAvgInst2,
-    line: { color: "#7F7F7F", dash: 'dot' }
+    line: { color: "#FFA500", dash: 'dot' }
   } : null;
 
   return (
@@ -115,7 +115,7 @@ export default function Board() {
           layout={{
             width: 1000,
             height: "500px", // Adjust height as needed
-            title: { text: (showMovingAvg ? 'Moving Average' : 'Price') }
+            title: { text: (showMovingAvg ? 'Price (Moving Average)' : 'Price') }
           }}
         />
       ) : (
