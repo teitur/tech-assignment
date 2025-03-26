@@ -1,10 +1,11 @@
 # Prerequisits
-node.js 
+Node.js 
+npm
 
-# Instructions
+# Install and Run 
 Open a terminal 
 ```
-cd nykredit  
+cd teitur-tech-assign 
 npm install  
 npm start  
 ```

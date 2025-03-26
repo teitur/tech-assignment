@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import Plot from 'react-plotly.js';
 
+import ToastError from './Toast'; 
+
 export default function Board() {
-  const [data, setData] = useState({'Inst1': [], 'Inst2': []});
+  const [data, setData] = useState({'Inst1': [], 'Inst2': []}); // Initialize data state
   const [showMovingAvg, setShowMovingAvg] = useState(false); // Toggle moving average visibility
   const [windowSize, setWindowSize] = useState(10); // Default window size for moving average
+  const [showToast, setShowToast] = useState(false); // State for toast visibility
+  const [toastMessage, setToastMessage] = useState(''); // State for toast message
 
   // Function to sort data by date and handle invalid dates
   function sortByDate(unsortedData) {
@@ -12,9 +16,8 @@ export default function Board() {
       .filter(item => {
         const date = new Date(item.date);
         if (isNaN(date.getTime())) { // Check if date is invalid
-          // FIXME: Improve handing of invalid dates
-          //        For now, log the error and exclude the item
-          console.error(`Invalid date: ${item.date}`);
+          setShowToast(true); // Show toast if date is invalid
+          setToastMessage(`Invalid date found: ${item.date}`); // Set toast message
           return false; // Exclude invalid date
         }
         return true; // Include valid date
@@ -127,8 +130,8 @@ export default function Board() {
       )}
 
       {/* Button to toggle moving average */}
-      <div className="row mb-3">
-        <div className="col-4 text-left">
+      <div className="row mb-5">
+        <div className="col-2 text-left">
           <button 
             className="btn btn-primary btn-sm"
             onClick={() => setShowMovingAvg(!showMovingAvg)}
@@ -136,11 +139,9 @@ export default function Board() {
             {showMovingAvg ? 'Hide' : 'Show'} Moving Average
           </button>
         </div>
-      </div>
 
-      {/* Conditionally render the input field for window size if showMovingAvg is true */}
-      {showMovingAvg && (
-        <div className="row mb-4">
+        {/* Conditionally render the input field for window size if showMovingAvg is true */}
+        {showMovingAvg && (
           <div className="col-4 text-left">
             <div className="form-floating">
               <input
@@ -153,11 +154,17 @@ export default function Board() {
                 max="50"
                 style={{ width: '180px' }} 
               />
-              <label htmlFor="movingAvgWindow">Moving Average Window</label>
+              <label htmlFor="movingAvgWindow">Moving Average No. Days</label>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
+      {/* Placeholder for Toast component */}
+      <ToastError show={showToast} 
+        onClose={() => setShowToast(false)}
+        errorMessage={toastMessage}
+      /> 
     </div>
   );
 }
