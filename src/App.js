@@ -114,7 +114,7 @@ export default function Board() {
           data={[trace1, trace2, trace3, trace4].filter(Boolean)} // Filter out null traces
           layout={{
             width: 1000,
-            height: "500px", // Adjust height as needed
+            height: 600, // Adjust height as needed
             title: { text: (showMovingAvg ? 'Price (Moving Average)' : 'Price') }
           }}
         />
