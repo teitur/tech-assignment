@@ -10,7 +10,6 @@ function ToastError({ show, onClose, errorMessage }) {
         >
         <Toast.Header>
             <strong className="me-auto">Error</strong>
-            <small>Just now</small>
         </Toast.Header>
         <Toast.Body>{errorMessage}</Toast.Body>
         </Toast>
