@@ -3,7 +3,7 @@ import Plot from 'react-plotly.js';
 
 import ToastError from './Toast'; 
 
-export default function Board() {
+export default function App() {
   const [data, setData] = useState({'Inst1': [], 'Inst2': []}); // Initialize data state
   const [showMovingAvg, setShowMovingAvg] = useState(false); // Toggle moving average visibility
   const [windowSize, setWindowSize] = useState(10); // Default window size for moving average
@@ -39,6 +39,7 @@ export default function Board() {
     return movingAvg;
   }
 
+  // Fetch data from JSON file and set state
   useEffect(() => {
     fetch('/data/input_data.json')
       .then((response) => response.json())
